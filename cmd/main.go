@@ -1,13 +1,13 @@
 package main
 
 import (
-	"api-todolist/cmd/api"
-	"api-todolist/config"
-	"api-todolist/db"
 	"database/sql"
 	"log"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/cmd/api"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/db"
 )
 
 func main() {

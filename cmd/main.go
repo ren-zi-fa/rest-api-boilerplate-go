@@ -7,12 +7,11 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/cmd/api"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/db"
 )
 
 func main() {
 
-	db, err := db.NewMySQLStorage(mysql.Config{
+	db, err := config.NewMySQLStorage(mysql.Config{
 		User:                 config.Envs.DBUser,
 		Passwd:               config.Envs.DBPassword,
 		DBName:               config.Envs.DBName,

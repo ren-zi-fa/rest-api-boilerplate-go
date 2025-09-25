@@ -39,7 +39,6 @@ func (h *Handler) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("from user", loginPayload.Password)
 	if err := utils.ComparePasswordBcrypt(user.Password, loginPayload.Password); err != nil {
 		utils.WriteError(w, http.StatusUnauthorized, fmt.Errorf("invalid email or password"))
 		return

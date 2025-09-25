@@ -6,9 +6,9 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/auth"
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/posts"
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/users"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/posts"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/users"
 )
 
 type APIServer struct {

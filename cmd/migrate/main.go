@@ -9,7 +9,6 @@ import (
 	mysqlMigrate "github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/db"
 )
 
 func main() {
@@ -23,7 +22,7 @@ func main() {
 		ParseTime:            true,
 	}
 
-	db, err := db.NewMySQLStorage(cfg)
+	db, err := config.NewMySQLStorage(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -6,7 +6,9 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/auth"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/posts"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/service/users"
 )
 
 type APIServer struct {
@@ -23,11 +25,22 @@ func NewServerAPI(addr string, db *sql.DB) *APIServer {
 
 func (s *APIServer) Run() error {
 	router := chi.NewRouter()
+
+	router.Route("/api/auth", func(r chi.Router) {
+		authStore := users.NewStore(s.db)
+		authHandler := auth.NewHandler(authStore)
+		authHandler.RegisterRoute(r)
+	})
 	router.Route("/api/v1", func(r chi.Router) {
+
+		usersStore := users.NewStore(s.db)
+		usersHandler := users.NewHandler(usersStore)
+		usersHandler.RegisterRoute(r)
 
 		postStore := posts.NewStore(s.db)
 		postsHandler := posts.NewHandler(postStore)
 		postsHandler.RegisterRoute(r)
+
 	})
 
 	log.Println("Server running on", s.addr)

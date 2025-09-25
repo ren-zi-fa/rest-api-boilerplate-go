@@ -2,7 +2,6 @@ package types
 
 import "time"
 
-// this is structure field of table POST
 type Post struct {
 	ID        int       `json:"id"`
 	Author    string    `json:"author"`
@@ -11,7 +10,6 @@ type Post struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-// this is user request payload
 type CreatePostPayload struct {
 	Author  string `json:"author" validate:"required,min=3"`
 	Title   string `json:"title" validate:"required,min=5"`

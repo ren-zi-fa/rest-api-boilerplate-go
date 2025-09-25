@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -23,7 +22,7 @@ func main() {
 		AllowNativePasswords: true,
 		ParseTime:            true,
 	}
-	fmt.Printf("Database Config: %+v\n", cfg)
+
 	db, err := db.NewMySQLStorage(cfg)
 	if err != nil {
 		log.Fatal(err)

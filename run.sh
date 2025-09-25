@@ -46,12 +46,16 @@ case "$CMD" in
   
   migrate-up)
     echo ">> Migrating up..."
+    mysql -u "$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" -P "$DB_PORT"\
+      -e "CREATE SCHEMA $DB_NAME;"
     go run cmd/migrate/main.go up
     ;;
   
   migrate-down)
     echo ">> Migrating down..."
-    go run cmd/migrate/main.go down
+   mysql -u "$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" -P "$DB_PORT"\
+      -e "DROP SCHEMA $DB_NAME;"
+    # go run cmd/migrate/main.go down
     ;;
 
   fix-version)

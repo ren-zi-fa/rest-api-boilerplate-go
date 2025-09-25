@@ -59,6 +59,8 @@ func (h *Handler) handleGetPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) handleDeletePost(w http.ResponseWriter, r *http.Request) {
+
+	// chi.URL param will catch path param example /post/{id}
 	postIdStr := chi.URLParam(r, "id")
 	postID, err := strconv.Atoi(postIdStr)
 	if err != nil {
@@ -87,6 +89,7 @@ func (h *Handler) handleCreatePost(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, http.StatusBadRequest, err)
 		return
 	}
+	// this method will compare contents of struct post and  struct post payload 
 	if err := utils.Validate.Struct(post); err != nil {
 		fieldErrors := utils.FormatValidationError(err)
 		utils.WriteJSON(w, http.StatusBadRequest, map[string]interface{}{

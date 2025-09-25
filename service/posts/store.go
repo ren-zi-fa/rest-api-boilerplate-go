@@ -17,11 +17,11 @@ func NewStore(db *sql.DB) *Store {
 }
 
 func (s *Store) GetPosts() ([]*types.Post, error) {
-	rows, err := s.db.Query("SELECT * FROM post")
+	rows, err := s.db.Query("SELECT * FROM posts")
 	if err != nil {
 		return nil, err
 	}
-
+	defer rows.Close()
 	posts := make([]*types.Post, 0)
 	for rows.Next() {
 		post, err := scanRowsIntoPost(rows)
@@ -35,7 +35,7 @@ func (s *Store) GetPosts() ([]*types.Post, error) {
 
 func (s *Store) GetPostByID(postID int) (*types.Post, error) {
 
-	row := s.db.QueryRow("SELECT id, title, author, content, createdAt FROM post WHERE id = ?", postID)
+	row := s.db.QueryRow("SELECT id, title, author, content, createdAt FROM posts WHERE id = ?", postID)
 
 	post := new(types.Post)
 
@@ -55,7 +55,7 @@ func (s *Store) GetPostByID(postID int) (*types.Post, error) {
 
 func (s *Store) DeletePostByID(id int) (int64, error) {
 
-	res, err := s.db.Exec("DELETE FROM post WHERE id = ?", id)
+	res, err := s.db.Exec("DELETE FROM posts WHERE id = ?", id)
 	if err != nil {
 		return 0, err
 	}
@@ -70,7 +70,7 @@ func (s *Store) DeletePostByID(id int) (int64, error) {
 
 func (s *Store) CreatePost(payload types.CreatePostPayload) (int64, error) {
 
-	result, err := s.db.Exec("INSERT INTO post (title, author, content) VALUES (?, ?, ?)",
+	result, err := s.db.Exec("INSERT INTO posts (title, author, content) VALUES (?, ?, ?)",
 		payload.Title, payload.Author, payload.Content)
 
 	if err != nil {

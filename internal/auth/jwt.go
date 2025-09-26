@@ -12,8 +12,8 @@ type RefreshClaims struct {
 	jwt.RegisteredClaims
 }
 type AccessClaims struct {
-	UserID uint `json:"user_id"`
-	// Role   string `json:"role,omitempty"`
+	UserID uint   `json:"user_id"`
+	Role   string `json:"role,omitempty"`
 	jwt.RegisteredClaims
 }
 
@@ -32,11 +32,11 @@ func GenerateRefreshToken(userID uint, tokenID string, secretKey string, duratio
 	return token.SignedString([]byte(secretKey))
 }
 
-// you can add role in param
-func GenerateAccessToken(userID uint,  secretKey string, duration time.Duration) (string, error) {
+
+func GenerateAccessToken(userID uint, role,secretKey string, duration time.Duration) (string, error) {
 	claims := AccessClaims{
 		UserID: userID,
-		// Role:   role,
+		Role:   role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Subject:   "access_token",
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(duration)),

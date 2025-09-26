@@ -42,8 +42,8 @@ func TestGenerateAndParseAcessToken(t *testing.T) {
 	userID := uint(2)
 	secretKey := config.Envs.JWTSecret
 	duration := config.Envs.ACCESS_TOKEN_EXPIRE_DURATION
-
-	token, err := GenerateAccessToken(userID, secretKey, duration)
+	role := "admin"
+	token, err := GenerateAccessToken(userID, role, secretKey, duration)
 	assert.NoError(t, err, "should not error when generating access token")
 	assert.NotEmpty(t, token, "access token should not be empty")
 

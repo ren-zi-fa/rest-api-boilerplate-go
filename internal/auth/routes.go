@@ -52,7 +52,7 @@ func (h *Handler) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, fmt.Errorf("failed generate refresh token"))
 	}
-	accessToken, err := GenerateAccessToken(uint(user.ID), config.Envs.JWTSecret, config.Envs.ACCESS_TOKEN_EXPIRE_DURATION)
+	accessToken, err := GenerateAccessToken(uint(user.ID), user.Role, config.Envs.JWTSecret, config.Envs.ACCESS_TOKEN_EXPIRE_DURATION)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, fmt.Errorf("failed generate access token"))
 	}

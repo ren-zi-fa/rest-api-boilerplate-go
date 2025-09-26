@@ -24,7 +24,7 @@ func (s *Store) GetUsers() ([]*types.User, error) {
 	users := make([]*types.User, 0)
 	for rows.Next() {
 		user := new(types.User)
-		err := rows.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+		err := rows.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role, &user.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -35,15 +35,17 @@ func (s *Store) GetUsers() ([]*types.User, error) {
 
 func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 
-	row := s.db.QueryRow("SELECT id, username, email,password, createdAt FROM users WHERE email = ?", email)
+	row := s.db.QueryRow("SELECT id, username, email,password, role, createdAt FROM users WHERE email = ?", email)
 
 	user := new(types.User)
 
+	// this has sequence must be same as SELECT statement
 	err := row.Scan(
 		&user.ID,
 		&user.Username,
 		&user.Email,
 		&user.Password,
+		&user.Role,
 		&user.CreatedAt,
 	)
 	if err != nil {
@@ -54,10 +56,10 @@ func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 }
 
 func (s *Store) CreateUser(user *types.User) (int64, error) {
-	
+
 	existingUser, err := s.GetUserByEmail(user.Email)
 	if err == nil && existingUser != nil {
-		return 0, sql.ErrNoRows 
+		return 0, sql.ErrNoRows
 	}
 	if err != nil && err != sql.ErrNoRows {
 		return 0, err

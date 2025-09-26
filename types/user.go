@@ -8,6 +8,7 @@ type User struct {
 	Password  string    `json:"password"`
 	Email     string    `json:"email"`
 	CreatedAt time.Time `json:"createdAt"`
+	Role      string    `json:"role"`
 }
 
 type RegisterUserPayload struct {

@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var Validate = validator.New()
@@ -54,15 +53,4 @@ func FormatValidationError(err error) map[string]string {
 	return errors
 }
 
-func HashPasswordBcrypt(password string) (string, error) {
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-	return string(hash), nil
-}
-
-func ComparePasswordBcrypt(hash, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-}

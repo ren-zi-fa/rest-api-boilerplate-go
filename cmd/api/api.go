@@ -27,8 +27,9 @@ func (s *APIServer) Run() error {
 	router := chi.NewRouter()
 
 	router.Route("/api/auth", func(r chi.Router) {
-		authStore := users.NewStore(s.db)
-		authHandler := auth.NewHandler(authStore)
+		usersStore := users.NewStore(s.db)
+		authStore := auth.NewStore(s.db)
+		authHandler := auth.NewHandler(usersStore, authStore)
 		authHandler.RegisterRoute(r)
 	})
 	router.Route("/api/v1", func(r chi.Router) {

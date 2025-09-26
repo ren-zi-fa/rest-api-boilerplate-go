@@ -1,6 +1,17 @@
 package types
 
-type Auth interface {
-	CheckUserByEmail(email string) (bool, error)
-	
+import "time"
+
+type RefreshTokenDB struct {
+	ID           int
+	UserID       int
+	RefreshToken string
+	ExpiresAt    time.Time
+	Revoked      bool
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
+type AuthStore interface {
+	RefreshTokenStore(token *RefreshTokenDB) (*RefreshTokenDB, error)
 }

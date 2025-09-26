@@ -1,7 +1,7 @@
 CREATE TABLE refresh_tokens (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT UNSIGNED NOT NULL,
-    `refresh_token` CHAR(64) NOT NULL UNIQUE, 
+    `refresh_token` VARCHAR(255) NOT NULL UNIQUE, 
     `expires_at` DATETIME NOT NULL,
     `revoked` BOOLEAN NOT NULL DEFAULT FALSE,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

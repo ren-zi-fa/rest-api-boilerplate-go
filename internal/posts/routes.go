@@ -7,6 +7,8 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/middleware"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/types"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/utils"
 )
@@ -18,13 +20,13 @@ type Handler struct {
 func NewHandler(store types.PostStore) *Handler {
 	return &Handler{store: store}
 }
-
 func (h *Handler) RegisterRoute(router chi.Router) {
-
 	router.Get("/posts", h.handleGetPosts)
 	router.Get("/posts/{id}", h.handleGetPost)
-	router.Post("/posts", h.handleCreatePost)
-	router.Delete("/posts/{id}", h.handleDeletePost)
+
+	router.With(middleware.NewAuthMiddleware(config.Envs.JWTSecret), middleware.RoleMiddleware("admin", "member")).Post("/posts", h.handleCreatePost)
+
+	router.With(middleware.NewAuthMiddleware(config.Envs.JWTSecret), middleware.RoleMiddleware("admin")).Delete("/posts/{id}", h.handleDeletePost)
 }
 
 func (h *Handler) handleGetPosts(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +91,7 @@ func (h *Handler) handleCreatePost(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, http.StatusBadRequest, err)
 		return
 	}
-	// this method will compare contents of struct post and  struct post payload 
+	// this method will compare contents of struct post and  struct post payload
 	if err := utils.Validate.Struct(post); err != nil {
 		fieldErrors := utils.FormatValidationError(err)
 		utils.WriteJSON(w, http.StatusBadRequest, map[string]interface{}{

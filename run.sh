@@ -21,6 +21,9 @@ case "$CMD" in
     echo ">> Running tests..."
     go test -v ./...
     ;;
+  test-limit)
+    bash internal/auth/middleware/test_limit.sh
+    ;;
   
   run)
     echo ">> Building..."
@@ -71,7 +74,7 @@ case "$CMD" in
     ;;
   
   *)
-    echo "Usage: $0 {build|test|run|run-dev|migration|migrate-up|migrate-down|fix-version}"
+    echo "Usage: $0 {build|test|test-limit||run|run-dev|migration|migrate-up|migrate-down|fix-version}"
     exit 1
     ;;
 esac

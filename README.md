@@ -47,6 +47,7 @@ git clone https://github.com/ren-zi-fa/rest-api-boilerplate-go
 cd rest-api-boilerplate-go
 ```
 ## development mode
+# in development make sure you have go in your local machine
 ```bash
 #1. make sure you have air on your go path if not run this
 go install github.com/air-verse/air@latest
@@ -67,9 +68,9 @@ http://localhost:8080/api/v1/posts
 
 ## production mode
 ``` bash
-    ./run-prod.sh
+./run-prod.sh
 
-    ./migrate-prod.sh
+./migrate-prod.sh
 
 ##url
 http://localhost:8081/api/v1/posts

@@ -4,7 +4,6 @@
 if [ -f .env.prod ]; then
   source .env.prod
 fi
-export APP_ENV=prod
 
 echo ">> Setting up database if not exists... $DB_NAME"
 

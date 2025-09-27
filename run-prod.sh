@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # stop jika ada error
+set -e  
 
 echo ">> Loading environment variables..."
 if [ -f .env ]; then
@@ -16,7 +16,7 @@ echo ">> Starting Docker containers..."
 docker compose -f docker-compose.prod.yml up -d
 
 echo ">> Waiting for MySQL to be ready..."
-until docker exec my-mysql-db mysqladmin ping -h"localhost" --silent; do
+until docker exec db-prod mysqladmin ping -h"localhost" --silent; do
     echo "Waiting for database..."
     sleep 2
 done
@@ -25,4 +25,4 @@ echo ">> Running database migrations..."
 go run cmd/migrate/main.go up
 
 echo ">> Application started!"
-echo "Visit: http://localhost:${APP_PORT:-8080}"
+echo "Visit: http://localhost:${APP_PORT:-8081}/api/v1/posts"

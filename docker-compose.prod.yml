@@ -1,7 +1,13 @@
+networks:
+  prod-net:
+    driver: bridge
+
 services:
   db:
     image: mysql:8.0
     container_name: db-prod
+    networks:
+      - prod-net
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -9,7 +15,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_prod:/var/lib/mysql
     ports:
       - "3306:3306"
     healthcheck:
@@ -21,6 +27,8 @@ services:
   app:
     build: .
     container_name: go_app
+    networks:
+      - prod-net
     restart: always
     ports:
       - "8080:8080"
@@ -36,6 +44,8 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
+    networks:
+      - prod-net
     ports:
       - "8081:80"
     volumes:
@@ -45,4 +55,4 @@ services:
     restart: always
 
 volumes:
-  db_data:
+  db_data_prod:

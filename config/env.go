@@ -23,7 +23,14 @@ type Config struct {
 var Envs = initConfig()
 
 func initConfig() *Config {
-	godotenv.Load()
+	env := os.Getenv("APP_ENV") 
+
+	if env == "prod" {
+		godotenv.Load(".env.prod")
+	} else {
+		godotenv.Load(".env.dev")
+	}
+
 	return &Config{
 		PublicHost:                    getEnv("PUBLIC_HOST", "http://localhost"),
 		Port:                          getEnv("PORT", "8080"),

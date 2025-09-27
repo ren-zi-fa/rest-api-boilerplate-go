@@ -2,18 +2,19 @@
 set -e  
 
 echo ">> Loading environment variables..."
-if [ -f .env ]; then
-  source .env
+if [ -f .env.prod ]; then
+  source .env.prod
 fi
+
 
 echo ">> Building Go application..."
 go build -o bin/main ./cmd
 
 echo ">> Building Docker containers..."
-docker compose -f docker-compose.prod.yml build
+docker compose --env-file .env.prod -f docker-compose.prod.yml build
 
 echo ">> Starting Docker containers..."
-docker compose -f docker-compose.prod.yml up -d
+docker compose --env-file .env.prod -f docker-compose.prod.yml up -d
 
 echo ">> Waiting for MySQL to be ready..."
 until docker exec db-prod mysqladmin ping -h"localhost" --silent; do

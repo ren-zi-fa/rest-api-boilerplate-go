@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # Load environment variables
-if [ -f .env ]; then
-  source .env
+if [ -f .env.dev ]; then
+  source .env.dev
 fi
+
 
 set -e 
 
@@ -50,14 +51,14 @@ case "$CMD" in
   migrate-up)
     echo ">> Migrating up..."
     mysql -u "$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" -P "$DB_PORT"\
-      -e "CREATE SCHEMA $DB_NAME;"
+      -e "CREATE SCHEMA IF NOT EXISTS $DB_NAME;"
     go run cmd/migrate/main.go up
     ;;
   
   migrate-down)
     echo ">> Migrating down..."
    mysql -u "$DB_USER" -p"$DB_PASSWORD" -h "$DB_HOST" -P "$DB_PORT"\
-      -e "DROP SCHEMA $DB_NAME;"
+      -e "DROP SCHEMA IF EXISTS $DB_NAME;"
     # go run cmd/migrate/main.go down
     ;;
 

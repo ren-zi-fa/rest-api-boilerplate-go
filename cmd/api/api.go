@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+
 	// "github.com/go-chi/chi/v5/middleware"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth"
 	costumMiddleware "github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/middleware"
@@ -28,7 +30,8 @@ func NewServerAPI(addr string, db *sql.DB) *APIServer {
 func (s *APIServer) Run() error {
 	router := chi.NewRouter()
 	router.Use(costumMiddleware.RateLimitMiddleware)
-	// router.Use(middleware.CleanPath)
+	router.Use(middleware.CleanPath)
+
 	router.Route("/api/auth", func(r chi.Router) {
 		usersStore := users.NewStore(s.db)
 		authStore := auth.NewStore(s.db)

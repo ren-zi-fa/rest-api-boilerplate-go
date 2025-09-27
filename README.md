@@ -12,7 +12,7 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Authentication (JWT)                 | ✅        | Access & Refresh token support |
 | Password hashing (bcrypt)            | ✅        | Secure password storage |
 | Role-based Access Control (RBAC)     | ✅        | Single-role per user (not multi-role) |
-| Middleware support                    | ✅        | Auth, Rate-limit, Logging, etc. |
+| Middleware support                    | ✅        | Auth, Rate-limit |
 | Rate limiting                         | ✅        | Custom middleware |
 | MySQL integration                     | ✅        | With migrations |
 | Dockerized deployment                 | ✅        | Separate dev & prod configs |
@@ -21,6 +21,8 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Multi-role support                    | ❌        | Only one role per user |
 | Refresh token revocation              | ❌        | Not implemented |
 | Swagger / API documentation           | ❌        | Planned for future |
+| Logging                               | ❌        | Planned for future |
+| seeder                                | ❌        | Planned for future |
 
 ---
 
@@ -35,6 +37,7 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Password Hash  | bcrypt |
 | Container      | Docker & Docker Compose |
 | Env Management | `.env` file |
+
 
 ---
 

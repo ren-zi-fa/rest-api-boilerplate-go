@@ -48,6 +48,23 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 ```bash
 git clone https://github.com/ren-zi-fa/rest-api-boilerplate-go
 cd rest-api-boilerplate-go
+
+cp .env.example .env.prod
+cp .env.example .env.dev
+
+```
+### example env
+```env
+APP_ENV=dev or prod
+DB_USER=username
+DB_PASSWORD=pass
+DB_NAME=db_name
+DB_PORT=3306
+DB_HOST=127.0.0.1
+JWT_SECRET=your-secret
+REFRESH_TOKEN_EXPIRE_DURATION=168h
+ACCESS_TOKEN_EXPIRE_DURATION=15m
+
 ```
 ## development mode
 ### in development make sure you have go in your local machine
@@ -70,6 +87,7 @@ http://localhost:8080/api/v1/posts
 ```
 
 ## production mode
+#### note: this configuration is still using http/1.1 you can configure your own for better
 ``` bash
 ./deploy.sh
 

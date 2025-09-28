@@ -9,9 +9,12 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/middleware"
+
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/types"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/utils"
 )
+
+var m types.Middleware = middleware.MiddlewareImpl{}
 
 type Handler struct {
 	store types.PostStore
@@ -24,9 +27,9 @@ func (h *Handler) RegisterRoute(router chi.Router) {
 	router.Get("/posts", h.handleGetPosts)
 	router.Get("/posts/{id}", h.handleGetPost)
 
-	router.With(middleware.NewAuthMiddleware(config.Envs.JWTSecret), middleware.RoleMiddleware("admin", "member")).Post("/posts", h.handleCreatePost)
+	router.With(m.NewAuthMiddleware(config.Envs.JWTSecret), m.RoleMiddleware("admin", "member")).Post("/posts", h.handleCreatePost)
 
-	router.With(middleware.NewAuthMiddleware(config.Envs.JWTSecret), middleware.RoleMiddleware("admin")).Delete("/posts/{id}", h.handleDeletePost)
+	router.With(m.NewAuthMiddleware(config.Envs.JWTSecret), m.RoleMiddleware("admin")).Delete("/posts/{id}", h.handleDeletePost)
 }
 
 func (h *Handler) handleGetPosts(w http.ResponseWriter, r *http.Request) {

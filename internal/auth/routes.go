@@ -9,9 +9,14 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/jwt"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/middleware"
+
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/types"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/utils"
 )
+
+var m types.Middleware = middleware.MiddlewareImpl{}
 
 type Handler struct {
 	user types.UserStore
@@ -28,6 +33,7 @@ func NewHandler(user types.UserStore, auth types.AuthStore) *Handler {
 func (h *Handler) RegisterRoute(router chi.Router) {
 	router.Post("/login", h.handleLoginUser)
 	router.Post("/register", h.handleRegisterUser)
+	router.With(m.CheckRefreshToken).Post("/refresh", h.handleRefreshToken)
 }
 
 func (h *Handler) handleLoginUser(w http.ResponseWriter, r *http.Request) {
@@ -48,11 +54,11 @@ func (h *Handler) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tokenID := uuid.NewString()
-	refreshToken, err := GenerateRefreshToken(uint(user.ID), tokenID, config.Envs.JWTSecret, config.Envs.REFRESH_TOKEN_EXPIRE_DURATION)
+	refreshToken, err := jwt.GenerateRefreshToken(uint(user.ID), tokenID, config.Envs.JWTSecret, config.Envs.REFRESH_TOKEN_EXPIRE_DURATION)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, fmt.Errorf("failed generate refresh token"))
 	}
-	accessToken, err := GenerateAccessToken(uint(user.ID), user.Role, config.Envs.JWTSecret, config.Envs.ACCESS_TOKEN_EXPIRE_DURATION)
+	accessToken, err := jwt.GenerateAccessToken(uint(user.ID), user.Role, config.Envs.JWTSecret, config.Envs.ACCESS_TOKEN_EXPIRE_DURATION)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, fmt.Errorf("failed generate access token"))
 	}
@@ -78,7 +84,7 @@ func (h *Handler) handleLoginUser(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
-		Path:     "/refresh",
+		Path:     "/auth/refresh",
 	})
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
@@ -122,4 +128,8 @@ func (h *Handler) handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.WriteJSON(w, http.StatusCreated, map[string]any{"id": id})
 
+}
+
+func (h *Handler) handleRefreshToken(w http.ResponseWriter, r *http.Request) {
+	
 }

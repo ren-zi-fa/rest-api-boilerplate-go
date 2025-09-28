@@ -24,7 +24,8 @@ func (s *Store) GetPosts() ([]*types.Post, error) {
 	defer rows.Close()
 	posts := make([]*types.Post, 0)
 	for rows.Next() {
-		post, err := scanRowsIntoPost(rows)
+		post := new(types.Post)
+		err := rows.Scan(&post.ID, &post.Title, &post.Author, &post.Content, &post.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -86,19 +87,3 @@ func (s *Store) CreatePost(payload types.CreatePostPayload) (int64, error) {
 }
 
 // scan row
-func scanRowsIntoPost(rows *sql.Rows) (*types.Post, error) {
-	post := new(types.Post)
-
-	err := rows.Scan(
-		&post.ID,
-		&post.Title,
-		&post.Author,
-		&post.Content,
-		&post.CreatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return post, nil
-}

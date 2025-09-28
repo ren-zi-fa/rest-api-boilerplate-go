@@ -1,6 +1,7 @@
-package auth
+package jwt
 
 import (
+	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -32,8 +33,7 @@ func GenerateRefreshToken(userID uint, tokenID string, secretKey string, duratio
 	return token.SignedString([]byte(secretKey))
 }
 
-
-func GenerateAccessToken(userID uint, role,secretKey string, duration time.Duration) (string, error) {
+func GenerateAccessToken(userID uint, role, secretKey string, duration time.Duration) (string, error) {
 	claims := AccessClaims{
 		UserID: userID,
 		Role:   role,
@@ -76,4 +76,27 @@ func ParseAccessToken(tokenStr string, secretKey string) (*AccessClaims, error) 
 		return claims, nil
 	}
 	return nil, jwt.ErrTokenInvalidClaims
+}
+
+func ValidateRefreshToken(tokenString string, secret string) (*RefreshClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &RefreshClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(*RefreshClaims)
+	if !ok || !token.Valid {
+		return nil, errors.New("invalid refresh token claims")
+	}
+
+	if claims.ExpiresAt != nil && time.Now().After(claims.ExpiresAt.Time) {
+		return nil, errors.New("refresh token expired")
+	}
+
+	return claims, nil
 }

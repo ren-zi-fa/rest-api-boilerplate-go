@@ -18,8 +18,8 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Dockerized deployment                 | ✅        | Separate dev & prod configs |
 | Migration management                  | ✅        | CLI migration scripts |
 | API versioning                        | ✅        | e.g., `/api/v1` routes |
+| Refresh token revocation              | ✅      | Not implemented |
 | Multi-role support                    | ❌        | Only one role per user |
-| Refresh token revocation              | ❌        | Not implemented |
 | Swagger / API documentation           | ❌        | Planned for future |
 | Logging                               | ❌        | Planned for future |
 | seeder                                | ❌        | Planned for future |
@@ -50,9 +50,9 @@ git clone https://github.com/ren-zi-fa/rest-api-boilerplate-go
 cd rest-api-boilerplate-go
 ```
 ## development mode
-# in development make sure you have go in your local machine
+### in development make sure you have go in your local machine
 ```bash
-#1. make sure you have air on your go path if not run this
+#1. make sure you have air on your go path, if not run this
 go install github.com/air-verse/air@latest
 
 #set up db using docker compose

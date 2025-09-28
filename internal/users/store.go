@@ -21,6 +21,7 @@ func (s *Store) GetUsers() ([]*types.User, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 	users := make([]*types.User, 0)
 	for rows.Next() {
 		user := new(types.User)

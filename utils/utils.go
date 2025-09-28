@@ -29,10 +29,12 @@ func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	return json.NewEncoder(w).Encode(v)
 }
 
+// return error message in json format to client
 func WriteError(w http.ResponseWriter, status int, err error) {
 	WriteJSON(w, status, map[string]string{"error": err.Error()})
 }
 
+// display error message for each field in struct
 func FormatValidationError(err error) map[string]string {
 	errors := make(map[string]string)
 	if ve, ok := err.(validator.ValidationErrors); ok {

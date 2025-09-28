@@ -14,4 +14,5 @@ type RefreshTokenDB struct {
 
 type AuthStore interface {
 	RefreshTokenStore(token *RefreshTokenDB) (*RefreshTokenDB, error)
+	GetRefreshTokenByTokenID(tokenID string) (*RefreshTokenDB, error)
 }

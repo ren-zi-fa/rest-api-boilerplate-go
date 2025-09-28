@@ -9,13 +9,13 @@ Accept: application/json
 
 ### delete post by id (only admin)
 DELETE   http://localhost:8080/api/v1/posts/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTg5MTI4MTAsImlhdCI6MTc1ODkxMTkxMH0.lgUERUpbr861ftIOTeSkltoptq3xqU0YvdcmbqQe224
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
 Accept: application/json
 
 ### create new post (only admin and member)
 POST  http://localhost:8080/api/v1/posts HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU4OTEyNTg0LCJpYXQiOjE3NTg5MTE2ODR9.DxX0t0BF_TrHWauHJWR7VvMsVCqX8MsOdIN_Q-AvB3w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
  
 {
   "author": "john doe ",
@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb
 
 ### get all users (only admin)
 GET   http://localhost:8080/api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTg5MTI4MTAsImlhdCI6MTc1ODkxMTkxMH0.lgUERUpbr861ftIOTeSkltoptq3xqU0YvdcmbqQe224
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
 Accept: application/json
 
 
@@ -47,3 +47,17 @@ Content-Type: : application/json
   "email":"admin@test.com",
   "password":"test123"
 }
+
+### Refresh Token
+POST http://localhost:8080/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ0b2tlbl9pZCI6IjVkOGM1OTEzLTNhYmEtNGRhZi05MzM2LTJmMGJlMTUwZjY1YSIsInN1YiI6InJlZnJlc2hfdG9rZW4iLCJleHAiOjE3NTk2NDgwNTksImlhdCI6MTc1OTA0MzI1OX0.nUREtzjIKQHARyKiSjXZNA2aoLNGMM-8XI8t5HmWHy0
+
+
+### Wrong Refresh Token
+POST http://localhost:8080/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+Cookie: refresh_token=edsfdsfsdfOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ0b2tlbl9pZCI6IjVkOGM1OTEzLTNhYmEtNGRhZi05MzM2LTJmMGJlMTUwZjY1YSIsInN1YiI6InJlZnJlc2hfdG9rZW4iLCJleHAiOjE3NTk2NDgwNTksImlhdCI6MTc1OTA0MzI1OX0.nUREtzjIKQHARyKiSjXZNA2aoLNGMM-8XI8t5HmWHy0
+
+
+

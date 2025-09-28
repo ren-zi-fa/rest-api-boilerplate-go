@@ -37,6 +37,10 @@ func (m *mockAuthRepo) RefreshTokenStore(token *types.RefreshTokenDB) (*types.Re
 	return args.Get(0).(*types.RefreshTokenDB), args.Error(1)
 }
 
+func (m *mockAuthRepo) GetRefreshTokenByTokenID(tokenID string) (*types.RefreshTokenDB, error) {
+	args := m.Called(tokenID)
+	return args.Get(0).(*types.RefreshTokenDB), args.Error(1)
+}
 func TestHandleLoginUser_Success(t *testing.T) {
 	
 	userRepo := new(mockUserRepo)

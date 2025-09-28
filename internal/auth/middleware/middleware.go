@@ -9,18 +9,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
+	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/jwt"
 	"golang.org/x/time/rate"
 )
 
+type MiddlewareImpl struct{}
 type contextKey string
+type refreshTokenKey string
 
 const (
-	ContextUserID contextKey = "userID"
-	ContextRole   contextKey = "role"
+	ContextUserID contextKey      = "userID"
+	ContextRole   contextKey      = "role"
+	RefreshToken  refreshTokenKey = "refreshToken"
 )
 
-func NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler {
+func (m MiddlewareImpl) NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			authHeader := r.Header.Get("Authorization")
@@ -30,7 +34,7 @@ func NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler {
 			}
 
 			tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-			claims, err := auth.ParseAccessToken(tokenStr, secretKey)
+			claims, err := jwt.ParseAccessToken(tokenStr, secretKey)
 			if err != nil {
 				http.Error(w, "invalid token", http.StatusUnauthorized)
 				return
@@ -43,7 +47,7 @@ func NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler {
 	}
 }
 
-func RoleMiddleware(allowedRoles ...string) func(http.Handler) http.Handler {
+func (m MiddlewareImpl) RoleMiddleware(allowedRoles ...string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			role, ok := r.Context().Value(ContextRole).(string)
@@ -94,7 +98,7 @@ func cleanupClients() {
 	}
 }
 
-func RateLimitMiddleware(next http.Handler) http.Handler {
+func (m MiddlewareImpl) RateLimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ip := r.Header.Get("X-Forwarded-For")
 		if ip == "" {
@@ -121,5 +125,24 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		next.ServeHTTP(w, r)
+	})
+}
+
+func (m MiddlewareImpl) CheckRefreshToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cookie, err := r.Cookie("refresh_token")
+		if err != nil {
+			http.Error(w, "Refresh token missing", http.StatusUnauthorized)
+			return
+		}
+
+		claims, err := jwt.ValidateRefreshToken(cookie.Value, config.Envs.JWTSecret)
+		if err != nil {
+			http.Error(w, "Invalid refresh token: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		ctx := context.WithValue(r.Context(), RefreshToken, claims)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

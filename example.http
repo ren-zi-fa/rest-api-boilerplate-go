@@ -51,7 +51,7 @@ Content-Type: : application/json
 ### Refresh Token
 POST http://localhost:8080/api/auth/refresh HTTP/1.1
 Content-Type: application/json
-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ0b2tlbl9pZCI6IjVkOGM1OTEzLTNhYmEtNGRhZi05MzM2LTJmMGJlMTUwZjY1YSIsInN1YiI6InJlZnJlc2hfdG9rZW4iLCJleHAiOjE3NTk2NDgwNTksImlhdCI6MTc1OTA0MzI1OX0.nUREtzjIKQHARyKiSjXZNA2aoLNGMM-8XI8t5HmWHy0
+Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ0b2tlbl9pZCI6IjY0MjdkNzdlLTdjYzgtNDI1ZS1hODY2LWY3YTg4MmZmMjZhYyIsInN1YiI6InJlZnJlc2hfdG9rZW4iLCJleHAiOjE3NTk2NTA4NjMsImlhdCI6MTc1OTA0NjA2M30.IMMf3YDyIw_PuEnIk2oL2A_wjNn8AeovmWVU-fJEruc
 
 
 ### Wrong Refresh Token

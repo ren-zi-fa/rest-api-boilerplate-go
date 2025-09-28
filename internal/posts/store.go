@@ -86,4 +86,4 @@ func (s *Store) CreatePost(payload types.CreatePostPayload) (int64, error) {
 	return id, nil
 }
 
-// scan row
+

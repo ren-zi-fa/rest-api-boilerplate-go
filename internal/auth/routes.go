@@ -131,5 +131,62 @@ func (h *Handler) handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) handleRefreshToken(w http.ResponseWriter, r *http.Request) {
-	
+
+	refreshToken := r.Context().Value(middleware.RefreshToken).(*jwt.RefreshClaims)
+
+	tokenID := uuid.NewString()
+	valueRefToken, err := jwt.GenerateRefreshToken(
+		refreshToken.UserID,
+		tokenID,
+		config.Envs.JWTSecret,
+		config.Envs.REFRESH_TOKEN_EXPIRE_DURATION,
+	)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+	duration := config.Envs.REFRESH_TOKEN_EXPIRE_DURATION
+	expiresAt := time.Now().Add(duration)
+	newTokenRef := &types.RefreshTokenDB{
+		UserID:       int(refreshToken.UserID),
+		RefreshToken: valueRefToken,
+		ExpiresAt:    expiresAt,
+	}
+	// save new token
+	newToken, err := h.auth.RefreshTokenStore(newTokenRef)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+	tokenRef := &types.RefreshTokenDB{
+		UserID:       int(refreshToken.UserID),
+		RefreshToken: refreshToken.TokenID,
+		ExpiresAt:    refreshToken.ExpiresAt.Time,
+	}
+	// save old token
+	_, err = h.auth.RefreshTokenStore(tokenRef)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	// Revoke token lama
+	err = h.auth.RevokeRefreshToken(int(refreshToken.UserID), refreshToken.TokenID)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    newToken.RefreshToken,
+		Expires:  newToken.ExpiresAt,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+		Path:     "/auth/refresh",
+	})
+	w.WriteHeader(http.StatusOK)
 }
+
+

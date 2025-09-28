@@ -16,12 +16,12 @@ import (
 
 type MiddlewareImpl struct{}
 type contextKey string
-type refreshTokenKey string
+
 
 const (
 	ContextUserID contextKey      = "userID"
 	ContextRole   contextKey      = "role"
-	RefreshToken  refreshTokenKey = "refreshToken"
+	RefreshToken  contextKey = "refreshToken"
 )
 
 func (m MiddlewareImpl) NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler {

@@ -9,7 +9,7 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 
 | Feature                               | Available | Notes |
 |---------------------------------------|:---------:|-------|
-| Authentication (JWT)                 | ✅        | Access & Refresh token support |
+| Authentication (JWT) (alg HS256)      | ✅        | Access & Refresh token support |
 | Password hashing (bcrypt)            | ✅        | Secure password storage |
 | Role-based Access Control (RBAC)     | ✅        | Single-role per user (not multi-role) |
 | Middleware support                    | ✅        | Auth, Rate-limit |
@@ -18,7 +18,7 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Dockerized deployment                 | ✅        | Separate dev & prod configs |
 | Migration management                  | ✅        | CLI migration scripts |
 | API versioning                        | ✅        | e.g., `/api/v1` routes |
-| Refresh token revocation              | ✅      | Not implemented |
+| Refresh token revocation              | ✅        |  implemented |
 | Multi-role support                    | ❌        | Only one role per user |
 | Swagger / API documentation           | ❌        | Planned for future |
 | Logging                               | ❌        | Planned for future |

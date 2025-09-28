@@ -2,6 +2,7 @@ package auth
 
 import (
 	"database/sql"
+	"errors"
 
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/types"
 )
@@ -53,4 +54,27 @@ func (s *Store) GetRefreshTokenByTokenID(tokenID string) (*types.RefreshTokenDB,
 	}
 
 	return &token, nil
+}
+
+func (s *Store) RevokeRefreshToken(userId int, token string) error {
+	query := `
+        UPDATE refresh_tokens
+        SET revoked = TRUE, updated_at = NOW()
+        WHERE user_id = ? AND refresh_token = ? AND revoked = FALSE
+    `
+	res, err := s.db.Exec(query, userId, token)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("no valid refresh token found to revoke")
+	}
+
+	return nil
 }

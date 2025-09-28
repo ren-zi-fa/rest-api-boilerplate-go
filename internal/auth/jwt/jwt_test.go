@@ -62,3 +62,36 @@ func TestGenerateAndParseAcessToken(t *testing.T) {
 		5*time.Second,
 		"ExpiredAt should match duration")
 }
+
+func TestValidateRefreshToken(t *testing.T) {
+	secret := config.Envs.JWTSecret
+	userID := uint(123)
+	tokenID := "token-xyz"
+	duration := time.Minute * 5
+
+	// Generate refresh token valid
+	refreshToken, err := GenerateRefreshToken(userID, tokenID, secret, duration)
+	assert.NoError(t, err, "generating refresh token failed")
+
+	// Valid token test
+	claims, err := ValidateRefreshToken(refreshToken, secret)
+	assert.NoError(t, err, "valid token should not error")
+	assert.Equal(t, userID, claims.UserID)
+	assert.Equal(t, tokenID, claims.TokenID)
+	assert.Equal(t, "refresh_token", claims.Subject)
+
+	// Invalid secret test
+	_, err = ValidateRefreshToken(refreshToken, "wrongsecret")
+	assert.Error(t, err, "wrong secret should error")
+
+	// Expired token test
+	expiredToken, err := GenerateRefreshToken(userID, tokenID, secret, -time.Minute*5)
+	assert.NoError(t, err)
+	_, err = ValidateRefreshToken(expiredToken, secret)
+	assert.Error(t, err, "expired token should error")
+
+	// Tampered token test
+	tamperedToken := refreshToken + "tamper"
+	_, err = ValidateRefreshToken(tamperedToken, secret)
+	assert.Error(t, err, "tampered token should error")
+}

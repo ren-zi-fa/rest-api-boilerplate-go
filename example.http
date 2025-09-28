@@ -8,14 +8,14 @@ GET  http://localhost:8080/api/v1/posts/1
 Accept: application/json
 
 ### delete post by id (only admin)
-DELETE   http://localhost:8080/api/v1/posts/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
+DELETE   http://localhost:8080/api/v1/posts/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTkwNTI3ODAsImlhdCI6MTc1OTA1MTg4MH0.OcKsX1o2m8z4-AsOWjxdXiZ08uIkPZe3eW7YqeIbyW8
 Accept: application/json
 
 ### create new post (only admin and member)
 POST  http://localhost:8080/api/v1/posts HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTkwNTI3ODAsImlhdCI6MTc1OTA1MTg4MH0.OcKsX1o2m8z4-AsOWjxdXiZ08uIkPZe3eW7YqeIbyW8
  
 {
   "author": "john doe ",
@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb
 
 ### get all users (only admin)
 GET   http://localhost:8080/api/v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoibWVtYmVyIiwic3ViIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzU5MDExMjQ2LCJpYXQiOjE3NTkwMTAzNDZ9.P_vA3DG4AWOMTLiUMy5XEnje8ZsbX6rCYBF6UJeyTo8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTkwNTI3ODAsImlhdCI6MTc1OTA1MTg4MH0.OcKsX1o2m8z4-AsOWjxdXiZ08uIkPZe3eW7YqeIbyW8
 Accept: application/json
 
 

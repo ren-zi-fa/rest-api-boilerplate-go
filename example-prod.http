@@ -1,6 +1,6 @@
 
 #### get all posts
-GET  http://localhost:8081/api/v1/posts
+GET  http://localhost:8081/api/v1/posts HTTP/2.0
 Accept: application/json
 
 ### get post by id
@@ -24,7 +24,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb
 }
 
 ### get all users (only admin)
-GET   http://localhost:8081/api/v1/users HTTP/1.1
+GET   http://localhost:8081/api/v1/users HTTP/2.0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhY2Nlc3NfdG9rZW4iLCJleHAiOjE3NTg5MTI4MTAsImlhdCI6MTc1ODkxMTkxMH0.lgUERUpbr861ftIOTeSkltoptq3xqU0YvdcmbqQe224
 Accept: application/json
 

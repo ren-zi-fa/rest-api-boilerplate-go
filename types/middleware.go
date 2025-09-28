@@ -7,4 +7,5 @@ type Middleware interface {
 	RoleMiddleware(allowedRoles ...string) func(http.Handler) http.Handler
 	NewAuthMiddleware(secretKey string) func(http.Handler) http.Handler
 	CheckRefreshToken(next http.Handler) http.Handler
+	LoggerJSON(next http.Handler) http.Handler
 }

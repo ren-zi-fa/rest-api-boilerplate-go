@@ -4,23 +4,26 @@ import (
 	"context"
 	"net"
 	"net/http"
+	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/config"
 	"github.com/ren-zi-fa/rest-api-boilerplate-go/internal/auth/jwt"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/time/rate"
 )
 
 type MiddlewareImpl struct{}
 type contextKey string
 
-
 const (
-	ContextUserID contextKey      = "userID"
-	ContextRole   contextKey      = "role"
+	ContextUserID contextKey = "userID"
+	ContextRole   contextKey = "role"
 	RefreshToken  contextKey = "refreshToken"
 )
 
@@ -144,5 +147,39 @@ func (m MiddlewareImpl) CheckRefreshToken(next http.Handler) http.Handler {
 
 		ctx := context.WithValue(r.Context(), RefreshToken, claims)
 		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func (m MiddlewareImpl) LoggerJSON(next http.Handler) http.Handler {
+	log := logrus.New()
+	log.SetFormatter(&logrus.JSONFormatter{})
+
+
+	logFile := filepath.Join("log", "log.file")
+
+	
+	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err == nil {
+		log.SetOutput(file)
+	} else {
+		log.Info("Gagal membuka file log, menggunakan stdout")
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
+		rw := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+		next.ServeHTTP(rw, r)
+
+		log.WithFields(logrus.Fields{
+			"method":       r.Method,
+			"uri":          r.RequestURI,
+			"status":       rw.Status(),
+			"remote_ip":    r.RemoteAddr,
+			"user_agent":   r.UserAgent(),
+			"duration_ms":  time.Since(start).Milliseconds(),
+			"duration_ns":  time.Since(start).Nanoseconds(),
+			"request_time": start.Format(time.RFC3339),
+		}).Info("request log")
 	})
 }

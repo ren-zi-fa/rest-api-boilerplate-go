@@ -32,6 +32,7 @@ func (s *APIServer) Run() error {
 	router := chi.NewRouter()
 	router.Use(m.RateLimitMiddleware)
 	router.Use(middleware.CleanPath)
+	router.Use(m.LoggerJSON)
 
 	router.Route("/api/auth", func(r chi.Router) {
 		usersStore := users.NewStore(s.db)

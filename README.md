@@ -9,9 +9,9 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 
 | Feature                               | Available | Notes |
 |---------------------------------------|:---------:|-------|
-| Authentication (JWT) (alg HS256)      | ✅        | Access & Refresh token support |
-| Password hashing (bcrypt)            | ✅        | Secure password storage |
-| Role-based Access Control (RBAC)     | ✅        | Single-role per user (not multi-role) |
+| Authentication (JWT, HS256)           | ✅        | Access & Refresh token support |
+| Password hashing (bcrypt)             | ✅        | Secure password storage |
+| Role-based Access Control (RBAC)      | ✅        | Single-role per user (not multi-role) |
 | Middleware support                    | ✅        | Auth, Rate-limit |
 | Rate limiting                         | ✅        | Custom middleware |
 | MySQL integration                     | ✅        | With migrations |
@@ -19,9 +19,9 @@ Includes authentication, role-based access control, middleware, and MySQL integr
 | Migration management                  | ✅        | CLI migration scripts |
 | API versioning                        | ✅        | e.g., `/api/v1` routes |
 | Refresh token revocation              | ✅        |  implemented |
+| Logging (file transport)              | ✅        |  support |
 | Multi-role support                    | ❌        | Only one role per user |
 | Swagger / API documentation           | ❌        | Planned for future |
-| Logging                               | ❌        | Planned for future |
 | seeder                                | ❌        | Planned for future |
 
 ---

@@ -71,7 +71,7 @@ http://localhost:8080/api/v1/posts
 
 ## production mode
 ``` bash
-./run-prod.sh
+./deploy.sh
 
 ./migrate-prod.sh
 
